@@ -1,15 +1,35 @@
-version: '3.8'
-
 services:
-  php:
+  hwzthatcore:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: php-container
+      dockerfile: 7.4/Dockerfile
+    container_name: php-hwzthatcore
+    environment:
+      VIRTUALHOST_NAMES: "core.hwzthat.local,lms.hwzthat.local,client1.hwzthat.local"
     volumes:
-      - ./app:/var/www/html
+      - ../pazhassi_howzthat-watw/source:/var/www/core.hwzthat.local/source
+      - ../pazhassi_howzthat-watw/source:/var/www/client1.hwzthat.local/source
+      - ../pazhassi_edbix_lms/source:/var/www/lms.hwzthat.local/source/public
+      - ../:/var/www/html
     ports:
-      - "8080:80"
+      - "80:80"
+    restart: always
+    depends_on:
+      - mysql
+
+  hwzthat_booking:
+    build:
+      context: .
+      dockerfile: 8.3/Dockerfile
+    container_name: php-83
+    environment:
+      VIRTUALHOST_NAMES: "booking.hwzthat.local"
+    volumes:
+      - ../rayssports_facility_booking:/var/www/booking.hwzthat.local/public
+      - ../:/var/www/html
+    ports:
+      - "82:80"
+    restart: always
     depends_on:
       - mysql
 
@@ -23,9 +43,24 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: userpassword
     ports:
-      - "3306:3306"
+      - "9306:3306"
     volumes:
       - db_data:/var/lib/mysql
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+    restart: always
+    ports:
+      - 9091:80
+    volumes:
+      - /sessions
+    links:
+      - mysql
+
 volumes:
   db_data:
+    driver: local
