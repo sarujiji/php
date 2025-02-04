@@ -2,7 +2,7 @@ services:
   hwzthatcore:
     build:
       context: .
-      dockerfile: 7.4/Dockerfile
+      dockerfile: Dockerfile
     container_name: php-hwzthatcore
     environment:
       VIRTUALHOST_NAMES: "core.hwzthat.local,lms.hwzthat.local,client1.hwzthat.local"
@@ -20,19 +20,33 @@ services:
   hwzthat_booking:
     build:
       context: .
-      dockerfile: 8.3/Dockerfile
+      dockerfile: Dockerfile83
     container_name: php-83
     environment:
       VIRTUALHOST_NAMES: "booking.hwzthat.local"
     volumes:
-      - ../rayssports_facility_booking:/var/www/booking.hwzthat.local/public
+      - ../rayssports_facility_booking:/var/www/booking.hwzthat.local
       - ../:/var/www/html
     ports:
       - "82:80"
     restart: always
     depends_on:
       - mysql
-
+  club7ms_portal:
+    build:
+      context: .
+      dockerfile: Dockerfile81
+    container_name: php-81
+    environment:
+      VIRTUALHOST_NAMES: "club7ms_portal.local"
+    volumes:
+      - ../club7ms_portal:/var/www/club7ms_portal.local
+      - ../:/var/www/html
+    ports:
+      - "86:80"
+    restart: always
+    depends_on:
+      - mysql
   mysql:
     image: mysql:8.0.40
     container_name: mysql-container
