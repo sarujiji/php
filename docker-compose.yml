@@ -2,7 +2,7 @@ services:
   hwzthatcore:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: 7.4/Dockerfile
     container_name: php-hwzthatcore
     environment:
       VIRTUALHOST_NAMES: "core.hwzthat.local,lms.hwzthat.local,client1.hwzthat.local"
@@ -20,7 +20,7 @@ services:
   hwzthat_booking:
     build:
       context: .
-      dockerfile: Dockerfile83
+      dockerfile: 8.3/Dockerfile
     container_name: php-83
     environment:
       VIRTUALHOST_NAMES: "booking.hwzthat.local"
@@ -35,7 +35,7 @@ services:
   club7ms_portal:
     build:
       context: .
-      dockerfile: Dockerfile81
+      dockerfile: 8.1/Dockerfile
     container_name: php-81
     environment:
       VIRTUALHOST_NAMES: "club7ms_portal.local"
